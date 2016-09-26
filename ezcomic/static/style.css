@@ -1,0 +1,105 @@
+@font-face {
+    font-family: ComicBook;
+    src: url("comic_book.otf") format("opentype");
+}
+:root{
+    --content-width:875px;
+    --footer-height: 20px;
+}
+
+.topbutton {
+    /*border:1px solid; 
+    border-radius:15px;*/
+    min-width:100px; 
+    max-width:50%; 
+    margin:auto;
+    font-family: 'ComicBook';
+    font-size:3.5vmin;
+}
+.topbutton > a {
+    color:black;
+}
+.navbutton {
+    font-size:9vmin;
+    margin-left: 20px;
+    margin-right: 20px;
+    text-color: black;
+}
+.navbutton > a {
+    hover,visited { color:#000};
+    text-decoration:none;
+    color:black;
+}
+
+.navbutton-disabled {
+        opacity:0.15;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: var(--footer-height);
+    background-color: #f5f5f5;
+    font-size:1.6vmin;
+    text-align:center;
+    display:flex;
+    align-items:center;
+}
+
+.text-page {
+    padding-top:40px;
+}
+.box {
+     border: 1px dotted grey;
+     padding: 5px;
+     margin-top:5px;
+     margin-bottom:5px;
+}
+
+img {
+    margin: 0 auto;
+}
+
+textarea {
+    width:100%;
+}
+
+.min150 {
+    min-width:150px;
+}
+
+.min100 {
+    min-width:100px;
+}
+
+#content {
+    max-width:var(--content-width);
+}
+
+#viewport {
+    position: absolute;
+    width:100%;
+    overflow-y:auto;
+    top:0;
+    /* hngh */
+    bottom: var(--footer-height);
+}
+
+#comic-content {
+    border-top:1px solid rgba(0,0,0,0.3);
+    border-bottom:1px solid rgba(0,0,0,0.3);
+    padding-bottom:10px;
+    text-align: left;
+}
+
+#comic-date {
+    font-family: 'ComicBook';
+    text-align:left;
+    font-size:3.5vmin;
+    padding-left:5px;
+}
+
+.comic-font {
+    font-family: 'ComicBook';
+}

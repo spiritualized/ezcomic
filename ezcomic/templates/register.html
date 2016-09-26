@@ -1,0 +1,29 @@
+{% extends 'template.html' %}
+{% block content %}
+
+<div class="text-page">
+  <h2 class="comic-font">Register</h2>
+  <div style="max-width:300px;">
+    {% if data.error %}
+    <div class="alert alert-danger">{{data.error}}</div>
+    {% endif %}
+    <form action="" method=post class="form-horizontal" data-toggle="validator">
+      <div class="form-group">
+        <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="{{request.username}}" required data-minlength="3" maxlength="20" />
+        <div class="help-block with-errors"></div>
+      </div>
+      <div class="form-group">
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password" required data-minlength="8" />
+        <div class="help-block with-errors"></div>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm password" required data-minlength="8" required data-match="#password" />
+        <div class="help-block with-errors"></div>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-default comic-font">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

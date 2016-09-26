@@ -1,0 +1,83 @@
+{% extends 'template.html' %}
+{% block content %}
+
+<div class="text-page">
+	<h2 class="comic-font">Post new comic</h2>
+	<div class="comic-font"><a href="#new_help" data-toggle="collapse">Show/hide help</a></div>
+	<div class="box collapse" id="new_help">
+		<div class="comic-font">
+			Upload your images to an imagehost and enter them below, using bbcode [img] tags.<br />
+			For example:
+		</div>
+		<textarea rows="4" disabled>
+[img]http://imghost.com/image1.jpeg[/img]
+[img]http://imghost.com/image2.jpeg[/img]
+[img]http://imghost.com/image3.jpeg[/img]
+		</textarea>
+	</div>
+	
+	<div class="help-block"></div>
+	{% if data.error %}
+    <div class="alert alert-danger">{{data.error}}</div>
+    {% endif %}
+	<form action="" method=post data-toggle="validator">
+	
+		<div class="form-group">
+	        <input type="text" class="form-control" id="datepicker" name="date" value="{{data.curr_date}}" required />
+	        <div class="help-block with-errors"></div>
+	    </div>
+            
+         <div class="form-group">
+	        <input type="text" class="form-control" name="title" value="{{data.title}}" placeholder="Title" />
+	        <div class="help-block with-errors"></div>
+	    </div>
+
+		<div class="form-group">
+			<textarea rows="8" name="comic_bbcode" required>{{data.contents}}</textarea>
+			<div class="help-block with-errors"></div>
+		</div>
+
+		<div class="form-group">
+			<button type="submit" class="btn btn-default comic-font">Post!</button>
+		</div>
+	</form>
+
+	<h2 class="comic-font">Edit comic</h2>
+	<table>
+		<tr>
+			<th class="min100">Post ID</th>
+			<th class="min150">Display date</th>
+			<th class="min150">Title</th>
+            <th class="min100">Views</th>
+            <th class="min100">Bot</th>
+            <th class="min100">Reorder up</th>
+            <th class="min100">Reorder down</th>
+		</tr>
+		{% for post in data.posts %}
+		<tr>
+			<td>{{post.pid}}</td>
+			<td>{{post.date}}</td>
+			<td><a href="{{post.url}}">{{post.title}}</a></td>
+            <td>{{post.views}}</td>
+            <td>{{post.bot_views}}</td>
+            <td>
+            	{% if post.move_up  %}
+            	<a href="{{post.move_up}}">↑ </a>
+            	{% else %}
+            	<span class="navbutton-disabled">↑ </span>
+            	{% endif %}
+            </td>
+            <td>
+            	{% if post.move_down %}
+            	<a href="{{post.move_down}}">↓</a>
+            	{% else %}
+            	<span class="navbutton-disabled">↓</span>
+            	{% endif %}
+            </td>
+		</tr>
+		{% endfor %}
+	</table>
+	<div class="help-block"></div>
+
+</div>
+{% endblock %}

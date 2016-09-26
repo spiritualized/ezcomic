@@ -1,0 +1,32 @@
+    <div>
+        {% if data.post_oldest == 0 or data.post_oldest == data.post_curr %}
+            <span class="navbutton navbutton-disabled">↞</span>
+        {% else %}
+            <span class="navbutton"><a href="/{{data.post_oldest}}" title="Oldest">↞</a></span>
+        {% endif %}
+
+        {% if data.post_previous == 0 %} 
+            <span class="navbutton navbutton-disabled">←</span>
+        {% else %}
+            <span class="navbutton"><a href="/{{data.post_previous}}" title="Previous">←</a></span>
+        {% endif %}
+
+        {% if data.post_random == 0 %} 
+            <span class="navbutton navbutton-disabled">↯</span>
+        {% else %}
+            <span class="navbutton"><a href="/{{data.post_random}}" title="Random">↯</a></span>
+        {% endif %}
+
+        {% if data.post_next == 0 %}
+            <span class="navbutton navbutton-disabled">→</span>
+        {% else %}
+            <span class="navbutton"><a href="/{{data.post_next}}" title="Next">→</a></span>
+        {% endif %}
+
+        {% if data.post_newest == 0 or data.post_newest == data.post_curr %}
+            <span class="navbutton navbutton-disabled">↠</span>
+        {% else %}
+            <span class="navbutton"><a href="/{{data.post_newest}}" title="Newest">↠</a></span>
+        {% endif %}
+
+    </div>
