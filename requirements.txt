@@ -1,0 +1,16 @@
+Flask==0.10.1
+Flask-Login==0.3.2
+Flask-SQLAlchemy==2.1
+Jinja2==2.8
+MarkupSafe==0.23
+SQLAlchemy==1.0.12
+Werkzeug==0.11.9
+bbcode==1.0.22
+bcrypt==2.0.0
+cffi==1.6.0
+flup6==1.1.1
+itsdangerous==0.24
+pycparser==2.14
+six==1.10.0
+ua-parser==0.7.1
+user-agents==1.0.1

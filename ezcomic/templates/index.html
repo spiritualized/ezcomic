@@ -1,0 +1,13 @@
+{% extends 'template.html' %}
+{% block content %}
+<div class="row text-center" style="padding-top:10px">   
+    {% include 'navbuttons.html' %}
+
+    <div id="comic-content">
+        <div id="comic-date">{{data.date}}</div>
+        {{data.comic_html|safe}}
+    </div>
+
+    {% include 'navbuttons.html' %}
+</div>
+{% endblock %}

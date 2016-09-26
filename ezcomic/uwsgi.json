@@ -1,0 +1,17 @@
+{
+    "uwsgi": {
+        "socket": ["/tmp/ezcomic.sock"],
+        "plugin": "python3",
+        "chdir": "/var/www/ezcomic/ezcomic",
+        "home": "/var/www/ezcomic/venv",
+        "uid": "www-data",
+        "gid": "www-data",
+        "chmod-socket": 660,
+        "module": "wsgi",
+        "callable": "app",
+        "master": true,
+        "processes": 2,
+        "vacuum": true,
+        "die-on-term": true
+    }
+}
