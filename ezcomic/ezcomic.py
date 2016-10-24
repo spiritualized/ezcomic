@@ -301,7 +301,7 @@ def admin():
         return render_template('admin.html', data=data)
 
     elif request.method == 'POST':
-        print(request.form)
+        
         if request.form['banner_url']:
 
             banner_url = request.form['banner_url']
