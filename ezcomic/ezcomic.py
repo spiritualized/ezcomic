@@ -60,6 +60,11 @@ class Post(db.Model):
     def __repr__(self):
         return "%s %s %s %s" % (self.pid, self.date, self.title, self.contents)
 
+class ConfigValue(db.Model):
+    __tablename__ = "config"
+    key = Column(db.String(128), primary_key=True)
+    value = Column(db.String(512))
+
 @login_manager.user_loader
 def load_user(uid):
     return db.session.query(User).get(uid)
@@ -76,6 +81,12 @@ def PopulateData():
         data['button3'] = 'login'
     else:
         data['button3'] = 'reg'
+
+
+    data['banner_url'] = "/static/images/banner2.png"
+    banner_url = db.session.query(ConfigValue).filter_by(key="banner_url").first()
+    if banner_url:
+        data['banner_url'] = banner_url.value
 
     return data
 
