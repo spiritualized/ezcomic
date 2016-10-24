@@ -65,6 +65,10 @@ class ConfigValue(db.Model):
     key = Column(db.String(128), primary_key=True)
     value = Column(db.String(512))
 
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+
 @login_manager.user_loader
 def load_user(uid):
     return db.session.query(User).get(uid)
@@ -296,17 +300,32 @@ def admin():
 
         return render_template('admin.html', data=data)
 
-    date = date_validate(request.form['date'])
+    elif request.method == 'POST':
+        print(request.form)
+        if request.form['banner_url']:
 
-    if not date:
-        data['error'] = 'Invalid date'
-        return render_template('admin.html', data=data)
+            banner_url = request.form['banner_url']
 
-    post = Post(date, request.form['title'], request.form['comic_bbcode'])
+            # force https if https in use
+            if "https://" in request.url:
+                banner_url = banner_url.replace("http://", "https://")
 
-    db.session.add(post)
-    db.session.commit()
-    return redirect(url_for('index'))
+            db.session.merge(ConfigValue("banner_url", banner_url))
+            db.session.commit()
+
+        else:
+            date = date_validate(request.form['date'])
+
+            if not date:
+                data['error'] = 'Invalid date'
+                return render_template('admin.html', data=data)
+
+            post = Post(date, request.form['title'], request.form['comic_bbcode'])
+
+            db.session.add(post)
+            db.session.commit()
+
+        return redirect(url_for('index'))
 
 @app.route('/edit/<pid>', methods=['GET', 'POST'])
 @login_required
