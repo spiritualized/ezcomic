@@ -302,7 +302,7 @@ def admin():
 
     elif request.method == 'POST':
         
-        if request.form['banner_url']:
+        if 'banner_url' in request.form:
 
             banner_url = request.form['banner_url']
 
