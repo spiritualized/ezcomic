@@ -292,6 +292,9 @@ def admin():
             post.date = post.date.strftime("%d/%m/%Y")
             post.url = url_for('edit', pid=post.pid)
 
+            if post.title == '':
+                post.title = '(untitled)'
+
             # generate urls for swapping comic order
             if post.pid is not data['posts'][0].pid:
                 post.move_up = url_for('admin', pid1=post.pid, pid2=post.pid+1)
