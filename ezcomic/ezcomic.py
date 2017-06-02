@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, g, send_from_directory
 from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Index, String, Integer, Text, DateTime
+from sqlalchemy import Column, Index, String, Integer, Text, DateTime, Boolean
 from flask_login import login_required, current_user, LoginManager, login_user, logout_user
 import user_agents
 import bcrypt
@@ -46,6 +46,7 @@ class Post(db.Model):
     pid = Column('pid', Integer, primary_key=True)
     date = Column('date', DateTime)
     title = Column('title', String(256))
+    published = Column('published', Boolean, default=True)
     contents = Column('contents', Text)
     views = Column('views', Integer, default=0)
     bot_views = Column('bot_views', Integer, default=0)
@@ -53,12 +54,13 @@ class Post(db.Model):
     def __init__(self, date, title, contents):
         self.date = date
         self.title = title
+        self.published = True
         self.contents = contents
-        views = 0
-        bot_views = 0
+        self.views = 0
+        self.bot_views = 0
 
     def __repr__(self):
-        return "%s %s %s %s" % (self.pid, self.date, self.title, self.contents)
+        return "%s %s %s %s" % (self.pid, self.date, self.title, self.published)
 
 class ConfigValue(db.Model):
     __tablename__ = "config"
@@ -154,10 +156,10 @@ def index(pid=-1):
         post.pid = 1
     # latest post
     elif pid is -1:
-        post = db.session.query(Post).order_by(Post.pid.desc()).first()
+        post = db.session.query(Post).filter_by(published=True).order_by(Post.pid.desc()).first()
     # specified post
     else:
-        post = db.session.query(Post).filter_by(pid=pid).first()
+        post = db.session.query(Post).filter_by(published=True, pid=pid).first()
 
         # if someone tried to retrieve a non-existant post
         if not post:
@@ -180,24 +182,24 @@ def index(pid=-1):
     data['post_newest'] = 0
     data['post_random'] = 0
 
-    curr = db.session.query(Post).order_by(Post.pid.asc()).first()
+    curr = db.session.query(Post).filter_by(published=True).order_by(Post.pid.asc()).first()
     if curr:
         data['post_oldest'] = curr.pid
-    curr = db.session.query(Post).order_by(Post.pid.desc()).first()
+    curr = db.session.query(Post).filter_by(published=True).order_by(Post.pid.desc()).first()
     if curr:
         data['post_newest'] = curr.pid
-    curr = db.session.query(Post).filter(Post.pid < post.pid).order_by(Post.pid.desc()).first()
+    curr = db.session.query(Post).filter_by(published=True).filter(Post.pid < post.pid).order_by(Post.pid.desc()).first()
     if curr:
         data['post_previous'] = curr.pid
-    curr = db.session.query(Post).filter(Post.pid > post.pid).order_by(Post.pid.asc()).first()
+    curr = db.session.query(Post).filter_by(published=True).filter(Post.pid > post.pid).order_by(Post.pid.asc()).first()
     if curr:
         data['post_next'] = curr.pid
 
     # pick a random pid (not the current one)
     if db.session.query(Post).count() > 1:
         while True:
-            rand = random.randrange(0,db.session.query(Post).count())
-            data['post_random'] = db.session.query(Post).offset(rand).first().pid
+            rand = random.randrange(0,db.session.query(Post).filter_by(published=True).count())
+            data['post_random'] = db.session.query(Post).filter_by(published=True).offset(rand).first().pid
 
             if data['post_random'] is not post.pid:
                 break
@@ -356,11 +358,12 @@ def edit(pid):
     post =  db.session.query(Post).filter_by(pid=pid).first()
     post.date = date_validate(request.form['date'])
     post.title = request.form['title']
+    post.published = int(request.form['published'])
     post.contents = request.form['comic_bbcode']
 
     db.session.commit()
     
-    return redirect(url_for('index', pid=pid))
+    return redirect(url_for('admin', pid=pid))
 
 db.create_all()
 
