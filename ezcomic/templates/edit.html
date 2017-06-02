@@ -16,6 +16,14 @@
 	        <div class="help-block with-errors"></div>
 	    </div>
 
+	    <div class="form-group">
+	    	<select name="published">
+	        	<option value="1" {% if data.post.published %} SELECTED {% endif %}>Published</option>
+	        	<option value="0" {% if not data.post.published %} SELECTED {% endif %}>Unpublished</option>
+	        </select>
+	        <div class="help-block with-errors"></div>
+	    </div>
+
 		<div class="form-group">
 			<textarea rows="8" name="comic_bbcode" required>{{data.post.contents}}</textarea>
 			<div class="help-block with-errors"></div>
